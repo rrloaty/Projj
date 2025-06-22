@@ -3,379 +3,207 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FutureBridge Foundation</title>
+  <title>Crypto Login & Sign Up</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f8fb;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    header {
-      background-color: #e0f0ff;
-      color: #0a2c47;
-      text-align: center;
-      padding: 40px 20px;
-    }
-
-    .nav-container {
-      background-color: #cce5f6;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-
-    nav {
+      background: radial-gradient(circle at top, #0f0f1b, #000);
+      color: #fff;
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
+      align-items: center;
+      height: 100vh;
     }
-
-    nav a {
-      color: #0a2c47;
-      padding: 15px 20px;
-      text-decoration: none;
-      font-weight: bold;
+    .container {
+      width: 360px;
+      background: #11152a;
+      border: 1px solid #1f2235;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.1);
+      overflow: hidden;
+      animation: glow 3s infinite alternate;
     }
-
-    nav a:hover { background-color: #b0d4ee; }
-
-    .menu-toggle {
-      display: none;
-      background-color: #cce5f6;
-      border: none;
-      padding: 15px;
-      width: 100%;
-      text-align: right;
+    @keyframes glow {
+      from { box-shadow: 0 0 10px rgba(0,255,255,0.2); }
+      to   { box-shadow: 0 0 25px rgba(0,255,255,0.5); }
+    }
+    .tabs {
+      display: flex;
       cursor: pointer;
     }
-
-    .hamburger {
-      width: 30px;
-      height: 20px;
-      position: relative;
-      margin-right: 20px;
-      display: inline-block;
-    }
-
-    .hamburger span {
-      background-color: #0a2c47;
-      height: 3px;
-      width: 100%;
-      position: absolute;
-      left: 0;
-      transition: all 0.3s ease;
-    }
-
-    .hamburger span:nth-child(1) { top: 0; }
-    .hamburger span:nth-child(2) { top: 8px; }
-    .hamburger span:nth-child(3) { top: 16px; }
-
-    .close-icon {
-      font-size: 30px;
-      color: #0a2c47;
-      font-weight: bold;
-      margin-right: 20px;
-    }
-
-    nav.hidden { display: none; }
-    nav.active { display: flex; }
-
-    main {
-      max-width: 1000px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .highlight {
-      background: white;
-      padding: 60px 30px;
-      margin: 30px 0;
-      border-radius: 10px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.6s ease-out;
-    }
-
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .donate-btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 25px;
-      background: #4caf50;
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 5px;
-    }
-
-    footer {
-      background-color: #0a2c47;
-      color: white;
+    .tab {
+      flex: 1;
       text-align: center;
-      padding: 25px;
-      margin-top: 30px;
+      padding: 15px;
+      background: #1a1e33;
+      color: #ccc;
+      transition: 0.3s;
+      border-bottom: 2px solid transparent;
     }
-
-    section a {
-      color: #11496b;
-      text-decoration: none;
+    .tab.active {
+      background: #0e182e;
+      color: #00ffff;
+      border-bottom: 2px solid #00ffff;
     }
-
-    section a:hover { text-decoration: underline; }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .gallery img {
-      width: 100%;
-      height: 350px;
-      object-fit: cover;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    .team-members {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
-
-    .team-member {
-      text-align: center;
-      flex: 1 1 250px;
-    }
-
-    .team-member img {
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin-bottom: 10px;
-    }
-
-    .testimonials {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .testimonial {
-      background-color: #f9fcff;
+    form {
       padding: 20px;
-      border-left: 5px solid #4caf50;
-      border-radius: 10px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+      display: none;
     }
-
-    @media (max-width: 768px) {
-      .menu-toggle { display: block; }
-      nav {
-        flex-direction: column;
-        display: none;
-      }
-      nav a {
-        border-top: 1px solid #b0d4ee;
-        text-align: center;
-      }
-      nav.hidden { display: none; }
-      nav.active { display: flex; }
+    form.active {
+      display: block;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #333c57;
+      background: #0e162e;
+      color: #00ffff;
+      border-radius: 6px;
+    }
+    input::placeholder {
+      color: #777;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #0072ff, #00c6ff);
+    }
+    .message {
+      margin-top: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .error {
+      color: #ff4f4f;
+    }
+    .success {
+      color: #00ff90;
+    }
+    h2 {
+      text-align: center;
+      color: #00ffff;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>FutureBridge Foundation</h1>
-  <p>Empowering lives, restoring hope.</p>
-</header>
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" onclick="showForm('login')">Login</div>
+    <div class="tab" onclick="showForm('signup')">Sign Up</div>
+  </div>
 
-<div class="nav-container">
-  <button class="menu-toggle" id="toggleBtn">
-    <div class="hamburger" id="hamburgerIcon">
-      <span></span><span></span><span></span>
-    </div>
-  </button>
-  <nav id="nav-links" class="">
-    <a href="#intro1">Vision</a>
-    <a href="#intro2">Belief</a>
-    <a href="#intro3">Action</a>
-    <a href="#about">About</a>
-    <a href="#programs">Programs</a>
-    <a href="#gallery">Gallery</a>
-    <a href="#team">Team</a>
-    <a href="#testimonials">Testimonials</a>
-    <a href="#donate">Donate</a>
-    <a href="#contact">Contact</a>
-  </nav>
+  <!-- LOGIN FORM -->
+  <form id="loginForm" class="active" action="project.html" method="GET" onsubmit="return validateLogin(event)">
+    <h2>Crypto Login</h2>
+    <input type="text" id="userId" placeholder="User ID" />
+    <input type="password" id="password" placeholder="Password" />
+    <button type="submit">Login</button>
+    <div id="loginMessage" class="message"></div>
+  </form>
+
+  <!-- SIGNUP FORM -->
+  <form id="signupForm" action="project.html" method="GET" onsubmit="return validateSignup(event)">
+    <h2>Create Crypto Account</h2>
+    <input type="text" id="signupName" placeholder="Full Name" />
+    <input type="text" id="signupId" placeholder="Create ID" />
+    <input type="password" id="signupPassword" placeholder="Password" />
+    <input type="text" id="signupReg" placeholder="Reg No" />
+    <button type="submit">Register</button>
+    <div id="signupMessage" class="message"></div>
+  </form>
 </div>
 
-<main>
-  <section id="intro1" class="highlight reveal active">
-    <h2>Our Vision</h2>
-    <p>We envision a world where every person has access to opportunity, dignity, and health.</p>
-  </section>
-
-  <section id="intro2" class="highlight reveal">
-    <h2>Our Belief</h2>
-    <p>We believe that sustainable change comes from empowering communities to lift themselves out of hardship.</p>
-  </section>
-
-  <section id="intro3" class="highlight reveal">
-    <h2>Why We Act</h2>
-    <p>Because no one should be left behind. FutureBridge acts where the need is greatest.</p>
-  </section>
-
-  <section id="about" class="highlight reveal">
-    <h2>About Us</h2>
-    <p>FutureBridge Foundation is committed to improving health, education, and economic outcomes for communities in need.</p>
-  </section>
-
-  <section id="programs" class="highlight reveal">
-    <h2>Our Programs</h2>
-    <ul>
-      <li>Medical outreach & community health</li>
-      <li>Education for vulnerable children</li>
-      <li>Women empowerment initiatives</li>
-      <li>Disaster response and food relief</li>
-    </ul>
-  </section>
-
-  <section id="gallery" class="highlight reveal">
-    <h2>Our Gallery</h2>
-    <div class="gallery">
-      <img src="https://source.unsplash.com/600x400/?help" alt="helping">
-      <img src="https://source.unsplash.com/600x400/?charity" alt="charity">
-      <img src="https://source.unsplash.com/600x400/?volunteer" alt="volunteer">
-      <img src="https://source.unsplash.com/600x400/?education" alt="education">
-    </div>
-  </section>
-
-  <section id="team" class="highlight reveal">
-    <h2>Meet Our Team</h2>
-    <div class="team-members">
-      <div class="team-member">
-        <img src="https://source.unsplash.com/150x150/?man,leader" alt="team1" />
-        <h4>John Ade</h4>
-        <p>Founder & Director</p>
-      </div>
-      <div class="team-member">
-        <img src="https://source.unsplash.com/150x150/?woman,smile" alt="team2" />
-        <h4>Grace Yusuf</h4>
-        <p>Programs Coordinator</p>
-      </div>
-      <div class="team-member">
-        <img src="https://source.unsplash.com/150x150/?woman,africa" alt="team3" />
-        <h4>Linda Okoro</h4>
-        <p>Health Lead</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="testimonials" class="highlight reveal">
-    <h2>What People Say</h2>
-    <div class="testimonials">
-      <div class="testimonial">
-        “FutureBridge Foundation made a big impact during the flood crisis. We’re so grateful!”
-        <br><br><strong>– Blessing A.</strong>
-      </div>
-      <div class="testimonial">
-        “They helped my daughter return to school with their education program.”
-        <br><br><strong>– Chinedu I.</strong>
-      </div>
-      <div class="testimonial">
-        “The medical outreach saved lives in our village. God bless this team.”
-        <br><br><strong>– Mama Peace</strong>
-      </div>
-    </div>
-  </section>
-
-  <section id="donate" class="highlight reveal">
-    <h2>Support Our Mission</h2>
-    <p>Your donation helps us reach more communities in need. Every contribution makes a difference.</p>
-    <a href="#" class="donate-btn">Donate Now</a>
-  </section>
-
-  <section id="contact" class="highlight reveal">
-    <h2>Contact Us</h2>
-    <p>Email: futurebridgefoundation@example.com</p>
-    <p>Phone: +234 911 430 1708</p>
-    <p>WhatsApp: +234 911 430 1708</p>
-    <p>
-      📘 <a href="https://facebook.com/profile.php?id=61577164753370" target="_blank">Facebook</a><br>
-      📸 <a href="https://instagram.com/bottech68" target="_blank">@bottech68</a><br>
-      💬 <a href="https://t.me/bbottechofficial" target="_blank">Join our Telegram</a>
-    </p>
-  </section>
-</main>
-
-<footer>
-  <p>&copy; 2025 FutureBridge Foundation. All rights reserved.</p>
-</footer>
-
 <script>
-  const toggleBtn = document.getElementById("toggleBtn");
-  const nav = document.getElementById("nav-links");
-  let menuOpen = false;
+  function showForm(formType) {
+    document.querySelector('.tab.active').classList.remove('active');
+    document.querySelector('form.active').classList.remove('active');
+    document.getElementById('loginMessage').textContent = '';
+    document.getElementById('signupMessage').textContent = '';
 
-  toggleBtn.addEventListener("click", () => {
-    menuOpen = !menuOpen;
-    if (menuOpen) {
-      nav.classList.remove("hidden");
-      nav.classList.add("active");
-      toggleBtn.innerHTML = `<span class="close-icon">×</span>`;
+    if (formType === 'login') {
+      document.querySelectorAll('.tab')[0].classList.add('active');
+      document.getElementById('loginForm').classList.add('active');
     } else {
-      nav.classList.add("hidden");
-      nav.classList.remove("active");
-      toggleBtn.innerHTML = `
-        <div class="hamburger" id="hamburgerIcon">
-          <span></span><span></span><span></span>
-        </div>`;
+      document.querySelectorAll('.tab')[1].classList.add('active');
+      document.getElementById('signupForm').classList.add('active');
     }
-  });
-
-  document.querySelectorAll("nav a").forEach(link => {
-    link.addEventListener("click", () => {
-      menuOpen = false;
-      nav.classList.add("hidden");
-      nav.classList.remove("active");
-      toggleBtn.innerHTML = `
-        <div class="hamburger" id="hamburgerIcon">
-          <span></span><span></span><span></span>
-        </div>`;
-    });
-  });
-
-  const reveals = document.querySelectorAll(".reveal");
-  function revealOnScroll() {
-    reveals.forEach(section => {
-      const windowHeight = window.innerHeight;
-      const sectionTop = section.getBoundingClientRect().top;
-      const visiblePoint = 150;
-      if (sectionTop < windowHeight - visiblePoint) {
-        section.classList.add("active");
-      }
-    });
   }
 
-  // Reveal first section immediately
-  window.addEventListener("DOMContentLoaded", () => {
-    reveals[0].classList.add("active");
-    revealOnScroll();
-  });
+  function validateLogin(e) {
+    const userId = document.getElementById('userId').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const message = document.getElementById('loginMessage');
 
-  window.addEventListener("scroll", revealOnScroll);
+    if (!userId || !password) {
+      e.preventDefault();
+      message.textContent = 'Please enter both User ID and Password.';
+      message.className = 'message error';
+      return false;
+    }
+
+    const storedId = localStorage.getItem('registeredId');
+    const storedPassword = localStorage.getItem('registeredPassword');
+
+    if ((userId === storedId && password === storedPassword) ||
+        (userId === '7eb788ndn70' && password === 'a679ndm8')) {
+      message.textContent = '✅ Login successful!';
+      message.className = 'message success';
+      return true; // allow submission
+    } else {
+      e.preventDefault();
+      message.textContent = '❌ Invalid User ID or Password.';
+      message.className = 'message error';
+      return false;
+    }
+  }
+
+  function validateSignup(e) {
+    const name = document.getElementById('signupName').value.trim();
+    const userId = document.getElementById('signupId').value.trim();
+    const password = document.getElementById('signupPassword').value.trim();
+    const reg = document.getElementById('signupReg').value.trim();
+    const message = document.getElementById('signupMessage');
+
+    if (!name || !userId || !password || !reg) {
+      e.preventDefault();
+      message.textContent = '⚠️ Please fill out all fields.';
+      message.className = 'message error';
+      return false;
+    }
+
+    if (reg !== '629jj7373v') {
+      e.preventDefault();
+      message.textContent = '❌ Invalid Reg No.';
+      message.className = 'message error';
+      return false;
+    }
+
+    // Save credentials
+    localStorage.setItem('registeredId', userId);
+    localStorage.setItem('registeredPassword', password);
+
+    message.textContent = '🎉 Sign up successful!';
+    message.className = 'message success';
+    return true; // allow form to submit to project.html
+  }
 </script>
 
 </body>
