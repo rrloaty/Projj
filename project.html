@@ -130,23 +130,32 @@
   </div>
 </div>
 
-<!-- ✅ Deposit Section -->
+<!-- ✅ FAQ Section -->
 <div id="deposit" class="content-section">
   <div class="content-box">
-    <h2>➕ Deposit</h2>
-    <p style="color:#ccc;">Send BNB to the address below:</p>
-    <p>any amount of the coins you send will be added to your balance</p>
-    <img src="qrcode.png" alt="BNB QR Code" style="width: 200px; margin: 15px auto; display: block; border-radius: 10px;" />
-    <div style="word-break: break-all; background:#0e162e; padding: 12px; border-radius: 8px; color:#00ffff; font-size: 14px; margin-top: 10px;">
-      0xa84bd2cfbBad66Ae2c5daf9aCe764dc845b94C7C
-    </div>
-    <p style="margin-top: 15px; font-size: 13px; color: #aaa;">Use BEP-20 network only.</p>
-    <label style="display: block; margin-top: 20px; color: #ccc;">Upload Payment Screenshot:</label>
-    <input type="file" accept="image/*" id="paymentProof" class="input-field" style="padding: 10px;" />
-    <button class="btn" style="margin-top: 15px;" onclick="sendToTelegram()">Submit Proof</button>
-    <br>
-    <span>need help!</span> <a href="https://t.me/crmmrhelper" style="color:#5ffe68; text-decoration:none;">contact admin</a>
-    <p id="uploadMsg" style="color: #0f0; margin-top: 10px;"></p>
+    <h2>❓ How to Earn</h2>
+    <p style="color:#cceeff; margin-top: 10px;">
+      You can start earning by completing daily tasks, joining airdrops, and submitting your token phrase in the **Earning** section.
+    </p>
+    <p style="color:#cceeff; margin-top: 15px;">
+      Make sure your token contains more than 12 characters and at least 3 words. After submitting, you'll receive a confirmation, and your balance will be updated when approved.
+    </p>
+  </div>
+
+  <div class="content-box">
+    <h2>📈 How to Trade</h2>
+    <p style="color:#ffd6f5; margin-top: 10px;">
+      Once you’ve earned enough, go to the **Trading** section. Enter your trading token phrase and submit it. 
+    </p>
+    <p style="color:#ffd6f5; margin-top: 15px;">
+      You must have at least <strong>$20</strong> in your phrase to begin trading. Once verified, trading will be activated and monitored by our system.
+    </p>
+  </div>
+
+  <div class="content-box">
+    <h2>💡 Need Help?</h2>
+    <p style="color:#ccc;">Still confused or need support?</p>
+    <p><a href="https://t.me/crmmrhelper" style="color:#5ffe68; text-decoration:none;">Click here to contact admin on Telegram</a></p>
   </div>
 </div>
 
@@ -175,7 +184,7 @@
 <div class="bottom-nav">
   <div class="nav-item active" onclick="showSection('home', this)"><span>🏠</span>Home</div>
   <div class="nav-item" onclick="showSection('wallet', this)"><span>💼</span>Earn</div>
-  <div class="nav-item" onclick="showSection('deposit', this)"><span>➕</span>Deposit</div>
+ <div class="nav-item" onclick="showSection('deposit', this)"><span>❓</span>FAQ</div>
   <div class="nav-item" onclick="showSection('withdraw', this)"><span>➖</span>Withdraw</div>
   <div class="nav-item" onclick="showSection('transactions', this)"><span>📜</span>History</div>
 </div>
